@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoCart AI India | Premium Tech</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & THEMES --- */
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --festive: #ff5e62; /* Warmer tone for Indian sales */
+            --festive-grad: linear-gradient(135deg, #ff9966, #ff5e62);
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-base: #0a0a0f;
+            --text-main: #ffffff;
+            --text-muted: #a0a0b0;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        [data-theme="light"] {
+            --bg-base: #f4f7f6;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- RESET & TYPOGRAPHY --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-base); color: var(--text-main); transition: var(--transition); overflow-x: hidden; }
+        h1, h2, h3, .logo { font-family: 'Space Grotesk', sans-serif; }
+        .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .festive-text { background: var(--festive-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* --- LOADER --- */
+        .loader-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-base); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .neon-spinner {
+            width: 60px; height: 60px; border: 4px solid transparent; border-top-color: var(--primary);
+            border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
+        }
+
+        /* --- NAVIGATION --- */
+        .glass-nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border); padding: 15px 5%; transition: var(--transition);
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .logo { font-size: 1.5rem; font-weight: 700; text-decoration: none; color: var(--text-main); }
+        .logo span { color: var(--primary); }
+        .nav-links a { color: var(--text-main); text-decoration: none; margin: 0 15px; font-weight: 500; transition: var(--transition); }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+
+        .search-box {
+            display: flex; align-items: center; background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 5px 15px;
+        }
+        .search-box input { background: transparent; border: none; color: var(--text-main); outline: none; padding: 5px; width: 180px; }
+        .icon-btn { background: transparent; border: none; color: var(--text-main); font-size: 1.2rem; cursor: pointer; transition: var(--transition); }
+        .icon-btn:hover { color: var(--primary); }
+        .cart-icon { position: relative; text-decoration: none; }
+        .cart-badge {
+            position: absolute; top: -8px; right: -8px; background: var(--gradient);
+            color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; font-weight: bold;
+        }
+
+        /* --- HERO & UTILITIES --- */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            background: radial-gradient(circle at center, rgba(0, 210, 255, 0.05) 0%, var(--bg-base) 70%); padding: 0 5%;
+        }
+        .glass-card {
+            background: var(--glass-bg); backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        .badge-festive {
+            display: inline-block; background: rgba(255, 94, 98, 0.1); color: var(--festive);
+            padding: 6px 18px; border-radius: 20px; border: 1px solid var(--festive);
+            font-size: 0.85rem; font-weight: 700; margin-bottom: 20px; letter-spacing: 1px; text-transform: uppercase;
+        }
+        .hero-content h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; }
+        .hero-content p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px; }
+
+        .btn { padding: 12px 25px; border-radius: 12px; font-weight: 600; text-decoration: none; cursor: pointer; transition: var(--transition); border: none; display: inline-flex; justify-content: center; align-items: center; gap: 8px; font-size: 0.95rem; }
+        .btn-primary { background: var(--gradient); color: white; }
+        .btn-festive { background: var(--festive-grad); color: white; }
+        .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+        .neon-hover:hover { box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); transform: translateY(-3px); }
+        .festive-hover:hover { box-shadow: 0 0 15px rgba(255, 94, 98, 0.4); transform: translateY(-3px); }
+
+        /* --- PIN CODE CHECKER --- */
+        .pin-checker {
+            max-width: 600px; margin: -50px auto 50px; padding: 20px; border-radius: 16px;
+            display: flex; gap: 15px; align-items: center; justify-content: space-between; z-index: 10; position: relative;
+        }
+        .pin-input { display: flex; flex-grow: 1; align-items: center; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 5px 15px; border: 1px solid var(--glass-border); }
+        .pin-input input { background: transparent; border: none; color: white; padding: 10px; width: 100%; outline: none; font-size: 1rem; }
+
+        /* --- PRODUCT CARDS --- */
+        .section { padding: 80px 5%; max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-header h2 { font-size: 2.2rem; margin-bottom: 10px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
+        .product-card { padding: 20px; transition: var(--transition); display: flex; flex-direction: column; border-radius: 20px; }
+        .product-card:hover { transform: translateY(-8px); border-color: var(--primary); }
+        .card-img-wrapper { position: relative; border-radius: 16px; overflow: hidden; background: var(--glass-bg); }
+        .card-img-wrapper img { width: 100%; aspect-ratio: 1/1; object-fit: cover; transition: transform 0.5s ease; display: block; }
+        .product-card:hover .card-img-wrapper img { transform: scale(1.08); }
+        
+        .ai-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.8); color: #fff; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; border: 1px solid var(--glass-border); backdrop-filter: blur(4px); }
+        .offer-badge { position: absolute; bottom: 12px; right: 12px; background: var(--festive-grad); color: white; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; }
+        
+        .card-info { padding-top: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-info h3 { font-size: 1.1rem; margin-bottom: 5px; font-weight: 600; }
+        .sub-tags { font-size: 0.75rem; color: #28a745; margin-bottom: 10px; font-weight: 500; }
+        .sub-tags span { border: 1px solid rgba(40, 167, 69, 0.3); padding: 2px 6px; border-radius: 4px; margin-right: 5px; }
+        
+        .price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 5px; }
+        .price { font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
+        .mrp { text-decoration: line-through; color: var(--text-muted); font-size: 0.9rem; }
+        .rating { color: #ffd700; font-size: 0.85rem; margin-bottom: 15px; }
+        
+        .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: auto; }
+
+        /* --- REVIEWS --- */
+        .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .review-card { padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); background: var(--glass-bg); }
+        .reviewer { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .reviewer img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+        .reviewer h4 { font-size: 1rem; margin-bottom: 2px; }
+        .reviewer p { font-size: 0.8rem; color: var(--text-muted); }
+        .verified { color: #00d2ff; font-size: 0.8rem; margin-left: 5px; }
+
+        /* --- CHECKOUT MODAL (UPI/COD) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px); z-index: 2000; display: none; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .checkout-modal {
+            background: var(--bg-base); border: 1px solid var(--glass-border); border-radius: 24px;
+            width: 90%; max-width: 500px; padding: 30px; position: relative; transform: translateY(20px); transition: all 0.3s ease;
+        }
+        .close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        
+        .upi-apps { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .upi-btn {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px 10px;
+            display: flex; flex-direction: column; align-items: center; gap: 8px; color: white; cursor: pointer; transition: 0.2s;
+        }
+        .upi-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--primary); }
+        .upi-btn img { height: 24px; object-fit: contain; }
+        
+        .address-form input {
+            width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); color: white;
+            padding: 12px; border-radius: 8px; margin-bottom: 15px; outline: none;
+        }
+        .address-form input:focus { border-color: var(--primary); }
+
+        /* --- RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            .nav-links, .search-box { display: none; }
+            .hero-content h1 { font-size: 2.2rem; }
+            .action-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loader -->
+    <div id="loader" class="loader-container">
+        <div class="neon-spinner"></div>
+        <h2 style="letter-spacing: 2px;">LOADING <span class="gradient-text">NEOCART INDIA</span></h2>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="glass-nav">
+        <div class="nav-container">
+            <a href="#" class="logo">NEO<span>CART</span></a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#ai-recs">Trending India</a>
+                <a href="#products">Maha Sale</a>
+            </div>
+            <div class="nav-actions">
+                <!-- UPDATED SEARCH BOX -->
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search laptops, mobiles..." onkeyup="handleSearch(event)">
+                    <i class="fas fa-search" onclick="executeSearch()" style="cursor: pointer;"></i>
+                </div>
+                <a href="#" class="icon-btn cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header id="home" class="hero">
+        <div class="hero-content glass-card">
+            <div class="badge-festive"><i class="fas fa-fire"></i> The Big Billion Tech Sale</div>
+            <h1>India's Next-Gen <br><span class="festive-text">Smart Store</span></h1>
+            <p>From Bengaluru to Delhi. Hyper-fast delivery, No Cost EMI, and AI-powered recommendations tailored for the Indian tech enthusiast.</p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                <a href="#products" class="btn btn-festive festive-hover">Shop Diwali Offers</a>
+                <a href="#ai-recs" class="btn btn-outline neon-hover">View Local Trends</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- PIN Code Checker -->
+    <div class="glass-card pin-checker">
+        <div>
+            <h3 style="font-size: 1.1rem;"><i class="fas fa-map-marker-alt text-primary"></i> Check Delivery Eligibility</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Enter PIN code for express delivery in India</p>
+        </div>
+        <div class="pin-input">
+            <input type="number" id="pin-input" placeholder="e.g. 570001 (Mysuru)" max="999999">
+            <button class="btn btn-primary" onclick="checkPin()" style="padding: 8px 15px;">Check</button>
+        </div>
+    </div>
+
+    <!-- Top Deals / AI Recs -->
+    <section id="ai-recs" class="section" style="padding-top: 20px;">
+        <div class="section-header">
+            <h2><i class="fas fa-bolt gradient-text"></i> Trending in Mysuru & Bengaluru</h2>
+            <p>High-demand gadgets near your location. Rated 4.5+ across India.</p>
+        </div>
+        
+        <div class="product-grid">
+            <!-- Product 1 -->
+            <div class="product-card glass-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&q=80" alt="Earbuds">
+                    <div class="ai-badge">Bestseller</div>
+                    <div class="offer-badge">60% OFF</div>
+                </div>
+                <div class="card-info">
+                    <h3>Quantum Wireless Earbuds</h3>
+                    <div class="sub-tags"><span>Incl. of all taxes</span><span>Free Delivery</span></div>
+                    <div class="price-row">
+                        <span class="price">₹1,999</span>
+                        <span class="mrp">₹4,999</span>
+                    </div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.8 (12,450 Ratings)</div>
+                    <div class="action-row">
+                        <button class="btn btn-outline neon-hover" onclick="addToCart()"><i class="fas fa-cart-plus"></i> Cart</button>
+                        <button class="btn btn-primary neon-hover" onclick="openCheckout('Quantum Wireless Earbuds', '1,999')"><i class="fas fa-bolt"></i> Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card glass-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&q=80" alt="Smartwatch">
+                    <div class="ai-badge">Trending</div>
+                </div>
+                <div class="card-info">
+                    <h3>Amoled Smart Watch Pro</h3>
+                    <div class="sub-tags"><span>No Cost EMI ₹291/mo</span></div>
+                    <div class="price-row">
+                        <span class="price">₹3,499</span>
+                        <span class="mrp">₹7,999</span>
+                    </div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.6 (8,230 Ratings)</div>
+                    <div class="action-row">
+                        <button class="btn btn-outline neon-hover" onclick="addToCart()"><i class="fas fa-cart-plus"></i> Cart</button>
+                        <button class="btn btn-primary neon-hover" onclick="openCheckout('Amoled Smart Watch Pro', '3,499')"><i class="fas fa-bolt"></i> Buy Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card glass-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=800&q=80" alt="Sneakers">
+                    <div class="ai-badge">AI Pick</div>
+                    <div class="offer-badge">Holi Special</div>
+                </div>
+                <div class="card-info">
+                    <h3>Aero-Levitate Tech Sneakers</h3>
+                    <div class="sub-tags"><span>Easy 7-day Returns</span></div>
+                    <div class="price-row">
+                        <span class="price">₹2,799</span>
+                        <span class="mrp">₹5,499</span>
+                    </div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.7 (3,100 Ratings)</div>
+                    <div class="action-row">
+                        <button class="btn btn-outline neon-hover" onclick="addToCart()"><i class="fas fa-cart-plus"></i> Cart</button>
+                        <button class="btn btn-primary neon-hover" onclick="openCheckout('Tech Sneakers', '2,799')"><i class="fas fa-bolt"></i> Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Premium / High Ticket Section -->
+    <section id="products" class="section">
+        <div class="section-header">
+            <h2>Premium Tech <span class="festive-text">Mega Drops</span></h2>
+            <p>Upgrade to the ultimate hardware. EMI available on all major credit cards.</p>
+        </div>
+        <div class="product-grid">
+            <!-- Product 4 -->
+            <div class="product-card glass-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&q=80" alt="Gaming Laptop">
+                </div>
+                <div class="card-info">
+                    <h3>Predator AI Gaming Laptop</h3>
+                    <div class="sub-tags"><span>RTX 4060</span><span>No Cost EMI ₹7,499/mo</span></div>
+                    <div class="price-row">
+                        <span class="price">₹89,999</span>
+                        <span class="mrp">₹1,15,000</span>
+                    </div>
+                    <div class="rating"><i class="fas fa-star"></i> 4.9 (1,200 Ratings)</div>
+                    <div class="action-row">
+                        <button class="btn btn-outline neon-hover" onclick="addToCart()">Add to Cart</button>
+                        <button class="btn btn-festive festive-hover" onclick="openCheckout('Gaming Laptop', '89,999')">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 5 -->
+            <div class="product-card glass-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=800&q=80" alt="AR Glasses">
+                </div>
+                <div class="card-info">
+                    <h3>Vision Pro AR Headset</h3>
+                    <div class="sub-tags"><span>Imported</span><span>10% Off via SBI Cards</span></div>
+                    <div class="price-row">
+                        <span class="price">₹1,49,999</span>
+                    </div>
+                    <div class="rating"><i class="fas fa-star"></i> 5.0 (85 Ratings)</div>
+                    <div class="action-row">
+                        <button class="btn btn-outline neon-hover" onclick="addToCart()">Add to Cart</button>
+                        <button class="btn btn-festive festive-hover" onclick="openCheckout('AR Headset', '1,49,999')">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Indian Reviews Section -->
+    <section class="section" style="padding-top: 0;">
+        <div class="section-header">
+            <h2>Loved across India <i class="fas fa-heart text-danger"></i></h2>
+        </div>
+        <div class="review-grid">
+            <div class="review-card">
+                <div class="reviewer">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                    <div>
+                        <h4>Rahul S. <i class="fas fa-check-circle verified"></i></h4>
+                        <p>Bengaluru, Karnataka</p>
+                    </div>
+                </div>
+                <div class="rating" style="margin-bottom: 5px;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">"Got my gaming laptop delivered in Mysuru within 24 hours! The UI is slick and the UPI checkout was flawless. Highly recommended."</p>
+            </div>
+            <div class="review-card">
+                <div class="reviewer">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User">
+                    <div>
+                        <h4>Priya M. <i class="fas fa-check-circle verified"></i></h4>
+                        <p>Mumbai, Maharashtra</p>
+                    </div>
+                </div>
+                <div class="rating" style="margin-bottom: 5px;"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">"The AI recommendations actually work. Found the perfect earbuds. Love that COD is available for almost everything!"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Indian Payment Modal -->
+    <div id="checkout-modal" class="modal-overlay">
+        <div class="checkout-modal">
+            <button class="close-modal" onclick="closeCheckout()"><i class="fas fa-times"></i></button>
+            <h2 style="margin-bottom: 10px;">Fast Checkout</h2>
+            <p id="checkout-item-name" style="color: var(--primary); font-weight: bold; margin-bottom: 5px;">Item Name</p>
+            <h3 id="checkout-item-price" style="margin-bottom: 25px; font-size: 1.8rem;">₹0</h3>
+            
+            <div class="address-form">
+                <h4 style="margin-bottom: 10px; font-size: 0.9rem;">Delivery Details</h4>
+                <input type="text" placeholder="Full Name">
+                <input type="text" placeholder="Complete Address (House No, Street)">
+                <input type="number" placeholder="PIN Code">
+            </div>
+
+            <h4 style="margin-top: 15px; margin-bottom: 10px; font-size: 0.9rem;">Pay via UPI (Instant & Secure)</h4>
+            <div class="upi-apps">
+                <div class="upi-btn" style="border-color: #5f259f;" onclick="processPayment('PhonePe')">
+                    <i class="fas fa-mobile-alt" style="color: #5f259f; font-size: 1.5rem;"></i>
+                    <span style="font-size: 0.8rem;">PhonePe</span>
+                </div>
+                <div class="upi-btn" style="border-color: #4285F4;" onclick="processPayment('GPay')">
+                    <i class="fab fa-google" style="color: #4285F4; font-size: 1.5rem;"></i>
+                    <span style="font-size: 0.8rem;">GPay</span>
+                </div>
+                <div class="upi-btn" style="border-color: #00BAF2;" onclick="processPayment('Paytm')">
+                    <i class="fas fa-wallet" style="color: #00BAF2; font-size: 1.5rem;"></i>
+                    <span style="font-size: 0.8rem;">Paytm</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-outline w-100" style="width: 100%; border-color: var(--glass-border); color: var(--text-main);" onclick="processPayment('COD')">
+                <i class="fas fa-truck"></i> Cash on Delivery (COD)
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Loader
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+            }, 1000);
+
+            // Sticky Nav
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.style.background = 'var(--glass-bg)';
+                    navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
+                } else {
+                    navbar.style.background = 'transparent';
+                    navbar.style.boxShadow = 'none';
+                }
+            });
+        });
+
+        // Cart Function
+        function addToCart() {
+            const badge = document.getElementById('cart-count');
+            badge.innerText = parseInt(badge.innerText) + 1;
+            badge.style.transform = 'scale(1.5)';
+            setTimeout(() => badge.style.transform = 'scale(1)', 200);
+        }
+
+        // PIN Checker
+        function checkPin() {
+            const pin = document.getElementById('pin-input').value;
+            if(pin.length === 6) {
+                if(pin.startsWith('570')) {
+                    alert(`Great! Delivery to Mysuru (PIN: ${pin}) is available within 24 hours via NeoCart Express.`);
+                } else if(pin.startsWith('560')) {
+                    alert(`Delivery to Bengaluru (PIN: ${pin}) is available for Same-Day Delivery!`);
+                } else {
+                    alert(`Delivery to PIN ${pin} is available within 3-4 standard business days.`);
+                }
+            } else {
+                alert("Please enter a valid 6-digit Indian PIN Code.");
+            }
+        }
+
+        // Checkout Modal Functions
+        const modal = document.getElementById('checkout-modal');
+        const modalInner = document.querySelector('.checkout-modal');
+
+        function openCheckout(name, price) {
+            document.getElementById('checkout-item-name').innerText = name;
+            document.getElementById('checkout-item-price').innerText = "₹" + price;
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modalInner.style.transform = 'translateY(0)';
+            }, 10);
+        }
+
+        function closeCheckout() {
+            modal.style.opacity = '0';
+            modalInner.style.transform = 'translateY(20px)';
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+
+        function processPayment(method) {
+            if(method === 'COD') {
+                alert("Order Confirmed! You can pay cash or via UPI scanner at the time of delivery.");
+            } else {
+                alert(`Redirecting to ${method} App...\n(Simulated UPI Gateway)`);
+            }
+            closeCheckout();
+            addToCart(); // Add to cart visually as a successful transaction
+        }
+
+        // --- SEARCH FUNCTIONALITY ---
+        function executeSearch() {
+            const searchBox = document.getElementById('searchInput');
+            const filter = searchBox.value.toLowerCase();
+            const products = document.querySelectorAll('.product-card');
+            let matchFound = false;
+
+            products.forEach(card => {
+                const titleElement = card.querySelector('h3');
+                if (titleElement) {
+                    const titleText = titleElement.innerText.toLowerCase();
+                    if (titleText.includes(filter)) {
+                        card.style.display = 'flex';
+                        matchFound = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+
+            if (!matchFound && filter !== "") {
+                alert(`No products found matching "${filter}". Try searching for "Laptop", "Earbuds", or "Sneakers".`);
+                products.forEach(card => card.style.display = 'flex');
+                searchBox.value = "";
+            }
+        }
+
+        function handleSearch(event) {
+            if (event.key === 'Enter' || event.keyCode === 13) {
+                executeSearch();
+            } else if (event.target.value === "") {
+                 const products = document.querySelectorAll('.product-card');
+                 products.forEach(card => card.style.display = 'flex');
+            }
+        }
+    </script>
+</body>
+</html>
